@@ -12,8 +12,8 @@ import SwiftData
 final class Renshuu: Identifiable {
     var id = UUID()
     
-    var original: String
-    var translation: String
+    var original: String = ""
+    var translation: String = ""
     
     /// It determines how quickly the inter-repetition interval grows.
     var easinessFactor: Double = 2.5
