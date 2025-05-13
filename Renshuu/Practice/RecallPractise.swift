@@ -16,10 +16,13 @@ struct RecallPractise: View {
     @State private var randomHue = Double.random(in: 0..<1)
 
     static var fetchDescriptor: FetchDescriptor<Renshuu> {
-        let now = Date()
+        let startOfToday = Calendar.current.startOfDay(for: .now)
+        let endOfToday = Calendar.current.date(byAdding: .day, value: 1, to: startOfToday)!
 
         var descriptor = FetchDescriptor<Renshuu>(
-            predicate: #Predicate { $0.dueDate < now },
+            predicate: #Predicate {
+                $0.dueDate >= startOfToday && $0.dueDate < endOfToday
+            },
             sortBy: [SortDescriptor(\.dueDate, order: .forward)]
         )
         descriptor.fetchLimit = 1
@@ -94,7 +97,7 @@ struct RecallPractise: View {
                     }
 
                     Spacer()
-                    
+
                     Color.clear
                         .frame(maxWidth: .infinity, maxHeight: 0)
                 }
