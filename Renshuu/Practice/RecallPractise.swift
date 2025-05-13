@@ -37,8 +37,6 @@ struct RecallPractise: View {
             Color(UIColor(hue: randomHue, saturation: 0.2, brightness: 1, alpha: 1))
                 .ignoresSafeArea(.all, edges: .all)
 
-            NavigationBackButton(hue: randomHue)
-
             VStack {
                 Spacer()
 
@@ -102,11 +100,8 @@ struct RecallPractise: View {
                         .frame(maxWidth: .infinity, maxHeight: 0)
                 }
             }
-            .scenePadding()
+            .padding()
         }
-        .background(EnableSwipeBackGesture())
-        .navigationBarBackButtonHidden(true)
-        .navigationBarHidden(true)
     }
 }
 

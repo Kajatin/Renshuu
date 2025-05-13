@@ -7,32 +7,34 @@
 
 import SwiftUI
 
+extension CGFloat {
+    static let appHue: CGFloat = 0.23
+}
+
+extension Color {
+    static let appLowSaturation: Color = Color(UIColor(hue: .appHue, saturation: 0.05, brightness: 1, alpha: 1))
+    static let appHighSaturation: Color = Color(UIColor(hue: .appHue, saturation: 0.8, brightness: 0.3, alpha: 1))
+}
+
 struct EditRenhsuu: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
-    
+
     @Bindable var renshuu: Renshuu
 
     var body: some View {
-        ZStack(alignment: .topLeading) {
-            Color(UIColor(hue: 0.48, saturation: 0.2, brightness: 1, alpha: 1))
+        ZStack {
+            Color.appLowSaturation
                 .ignoresSafeArea(.all, edges: .all)
 
-            NavigationBackButton(hue: 0.48)
-
             VStack {
-                Text("Edit")
-                    .foregroundStyle(Color(UIColor(hue: 0.48, saturation: 0.7, brightness: 0.4, alpha: 1)))
-                    .font(.system(size: 24, design: .serif))
-                    .padding(.top, 20)
-
                 Spacer()
 
-                VStack(spacing: 24) {
+                VStack(spacing: 32) {
                     VStack(alignment: .leading) {
-                        Text("Original")
+                        Text("Word")
                             .font(.system(size: 14, weight: .light))
-                            .opacity(0.7)
+                            .foregroundStyle(.neutral600)
 
                         TextField("Enter the original word", text: $renshuu.original)
                             .textInputAutocapitalization(.never)
@@ -40,16 +42,16 @@ struct EditRenhsuu: View {
                     }
 
                     VStack(alignment: .leading) {
-                        Text("Translation")
+                        Text("Meaning")
                             .font(.system(size: 14, weight: .light))
-                            .opacity(0.7)
+                            .foregroundStyle(.neutral600)
 
-                        TextField("Enter the translation", text: $renshuu.translation)
+                        TextField("Enter the meaning of the word", text: $renshuu.translation)
                             .textInputAutocapitalization(.never)
                             .disableAutocorrection(true)
                     }
                 }
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .textFieldStyle(UnderlinedTextFieldStyle())
 
                 Spacer()
 
@@ -63,8 +65,8 @@ struct EditRenhsuu: View {
                         Text("Save")
                             .frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(CuteButtonStyle(hue: 0.48))
-                    
+                    .buttonStyle(CuteButtonStyle(hue: .appHue))
+
                     Button {
                         withAnimation {
                             modelContext.delete(renshuu)
@@ -74,14 +76,12 @@ struct EditRenhsuu: View {
                         Text("Delete")
                             .frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(CuteButtonStyleLight(hue: 0.48))
+                    .buttonStyle(CuteButtonStyleLight(hue: .appHue))
                 }
             }
-            .scenePadding()
+            .padding()
         }
-        .background(EnableSwipeBackGesture())
-        .navigationBarBackButtonHidden(true)
-        .navigationBarHidden(true)
+        .navigationTitle("Edit")
     }
 }
 
@@ -91,8 +91,8 @@ private struct PreviewContainer: View {
     var body: some View {
         NavigationStack {
             EditRenhsuu(renshuu: renshuu)
-                .modelContainer(for: Renshuu.self, inMemory: true)
         }
+        .modelContainer(for: Renshuu.self, inMemory: true)
     }
 }
 

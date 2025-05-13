@@ -20,24 +20,17 @@ struct CreateNewRenshuu: View {
 
     var body: some View {
         ZStack(alignment: .topLeading) {
-            Color(UIColor(hue: 0.48, saturation: 0.2, brightness: 1, alpha: 1))
+            Color.appLowSaturation
                 .ignoresSafeArea(.all, edges: .all)
 
-            NavigationBackButton(hue: 0.48)
-
             VStack {
-                Text("New")
-                    .foregroundStyle(Color(UIColor(hue: 0.48, saturation: 0.7, brightness: 0.4, alpha: 1)))
-                    .font(.system(size: 24, design: .serif))
-                    .padding(.top, 20)
-                
                 Spacer()
 
-                VStack(spacing: 24) {
+                VStack(spacing: 32) {
                     VStack(alignment: .leading) {
-                        Text("Original")
+                        Text("Word")
                             .font(.system(size: 14, weight: .light))
-                            .opacity(0.7)
+                            .foregroundStyle(.neutral600)
                         
                         TextField("Enter the original word", text: $original)
                             .textInputAutocapitalization(.never)
@@ -45,16 +38,16 @@ struct CreateNewRenshuu: View {
                     }
                     
                     VStack(alignment: .leading) {
-                        Text("Translation")
+                        Text("Meaning")
                             .font(.system(size: 14, weight: .light))
-                            .opacity(0.7)
+                            .foregroundStyle(.neutral600)
                         
-                        TextField("Enter the translation", text: $translation)
+                        TextField("Enter the meaning of the word", text: $translation)
                             .textInputAutocapitalization(.never)
                             .disableAutocorrection(true)
                     }
                 }
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .textFieldStyle(UnderlinedTextFieldStyle())
 
                 Spacer()
 
@@ -70,21 +63,19 @@ struct CreateNewRenshuu: View {
                     Text(isOnboarding ? "Get started" : "Save")
                         .frame(maxWidth: .infinity)
                 }
-                .buttonStyle(CuteButtonStyle(hue: 0.48))
+                .buttonStyle(CuteButtonStyle(hue: .appHue))
                 .disabled(original.isEmpty || translation.isEmpty)
                 .opacity(original.isEmpty || translation.isEmpty ? 0.7 : 1.0)
             }
-            .scenePadding()
+            .padding()
         }
-        .background(EnableSwipeBackGesture())
-        .navigationBarBackButtonHidden(true)
-        .navigationBarHidden(true)
+        .navigationTitle("New")
     }
 }
 
 #Preview {
     NavigationStack {
         CreateNewRenshuu()
-            .modelContainer(for: Renshuu.self, inMemory: true)
     }
+    .modelContainer(for: Renshuu.self, inMemory: true)
 }

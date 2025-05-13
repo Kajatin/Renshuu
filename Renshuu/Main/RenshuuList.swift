@@ -12,55 +12,22 @@ struct RenshuuList: View {
     @Query(sort: \Renshuu.dueDate, order: .forward) var renshuus: [Renshuu]
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                Text("Collection")
-                    .font(.system(size: 14, weight: .light))
-                    .foregroundStyle(.neutral800)
-                    .opacity(0.7)
-
-                if renshuus.isEmpty {
-                    HStack {
-                        Text("Start by adding a new Renshuu")
-                            .foregroundStyle(.neutral950)
-
-                        Spacer()
-                    }
-                    .padding(.top)
-                } else {
-                    ScrollView {
-                        LazyVStack(alignment: .leading, spacing: 0) {
-                            ForEach(Array(renshuus.enumerated()), id: \.element.id) { index, renshuu in
-                                VStack(alignment: .leading, spacing: 0) {
-                                    NavigationLink(destination: EditRenhsuu(renshuu: renshuu)) {
-                                        HStack {
-                                            RenshuuListRowItem(renshuu: renshuu)
-
-                                            Image(systemName: "chevron.right")
-                                                .font(.system(size: 14))
-                                                .foregroundStyle(.neutral800)
-                                                .opacity(0.8)
-                                        }
-                                    }
-                                    .padding(.vertical)
-
-                                    if index < renshuus.count - 1 {
-                                        Divider()
-                                    }
-                                }
-                            }
-
-                            Spacer()
-                                .frame(height: 140)
-                        }
-                    }
-                    .scrollIndicators(.hidden)
+        List {
+            ForEach(renshuus) { renshuu in
+                NavigationLink(destination: EditRenhsuu(renshuu: renshuu)) {
+                    Text(renshuu.original)
+                        .foregroundStyle(.neutral950)
                 }
             }
-            .padding(.top)
+
+            // Empty footer to allow extra space
+            Section(footer: Spacer().frame(height: 140)) {
+                EmptyView()
+            }
+            .listRowSeparator(.hidden)
         }
-        .scenePadding(.horizontal)
-        .scrollIndicators(.hidden)
+        .listStyle(.plain)
+        .navigationTitle("Collection")
     }
 }
 

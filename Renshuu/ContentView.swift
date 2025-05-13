@@ -12,10 +12,12 @@ struct ContentView: View {
     @AppStorage("onboardingNeeded") var onboardingNeeded: Bool = true
 
     var body: some View {
-        if onboardingNeeded {
-            Welcome()
-        } else {
-            Main()
+        NavigationStack {
+            if onboardingNeeded {
+                Welcome()
+            } else {
+                Main()
+            }
         }
     }
 }

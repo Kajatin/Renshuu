@@ -135,52 +135,28 @@ struct CustomSlider: View {
     let randomHue: Double = 0.3
     return VStack(spacing: 24) {
         GradeSlider(
-            color: Color(
-                UIColor(
-                    hue: randomHue, saturation: 0.8, brightness: 0.3, alpha: 1)),
-            textColor: Color(
-                UIColor(
-                    hue: randomHue, saturation: 0.2, brightness: 1, alpha: 1)),
+            color: Color.appHighSaturation,
+            textColor: Color.appLowSaturation,
             value: .constant(0))
         GradeSlider(
-            color: Color(
-                UIColor(
-                    hue: randomHue, saturation: 0.8, brightness: 0.3, alpha: 1)),
-            textColor: Color(
-                UIColor(
-                    hue: randomHue, saturation: 0.2, brightness: 1, alpha: 1)),
+            color: Color.appHighSaturation,
+            textColor: Color.appLowSaturation,
             value: .constant(1))
         GradeSlider(
-            color: Color(
-                UIColor(
-                    hue: randomHue, saturation: 0.8, brightness: 0.3, alpha: 1)),
-            textColor: Color(
-                UIColor(
-                    hue: randomHue, saturation: 0.2, brightness: 1, alpha: 1)),
+            color: Color.appHighSaturation,
+            textColor: Color.appLowSaturation,
             value: .constant(2))
         GradeSlider(
-            color: Color(
-                UIColor(
-                    hue: randomHue, saturation: 0.8, brightness: 0.3, alpha: 1)),
-            textColor: Color(
-                UIColor(
-                    hue: randomHue, saturation: 0.2, brightness: 1, alpha: 1)),
+            color: Color.appHighSaturation,
+            textColor: Color.appLowSaturation,
             value: .constant(3))
         GradeSlider(
-            color: Color(
-                UIColor(
-                    hue: randomHue, saturation: 0.8, brightness: 0.3, alpha: 1)),
-            textColor: Color(
-                UIColor(
-                    hue: randomHue, saturation: 0.2, brightness: 1, alpha: 1)),
+            color: Color.appHighSaturation,
+            textColor: Color.appLowSaturation,
             value: .constant(4))
         GradeSlider(
-            color: Color(
-                UIColor(
-                    hue: randomHue, saturation: 0.8, brightness: 0.3, alpha: 1)),
-            textColor: Color(
-                UIColor(
-                    hue: randomHue, saturation: 0.2, brightness: 1, alpha: 1)),
+            color: Color.appHighSaturation,
+            textColor: Color.appLowSaturation,
             value: .constant(5))
     }
     .scenePadding()

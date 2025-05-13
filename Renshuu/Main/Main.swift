@@ -10,40 +10,35 @@ import SwiftUI
 
 struct Main: View {
     @Query var renshuus: [Renshuu]
-    
+
+    @Environment(\.modelContext) private var modelContext
+
     var body: some View {
-        ZStack {
-            Color.neutral50
-                .ignoresSafeArea()
+        ZStack(alignment: .bottomTrailing) {
+            VStack(alignment: .leading, spacing: 0) {
+//                if !renshuus.isEmpty {
+//                    WordOfTheDay()
+//                }
 
-            NavigationStack {
-                ZStack(alignment: .bottomTrailing) {
-                    VStack(alignment: .leading, spacing: 0) {
-//                        if !renshuus.isEmpty {
-//                            WordOfTheDay()
-//                        }
-
-                        RenshuuList()
-                    }
-
-                    VStack {
-                        if !renshuus.isEmpty {
-                            NavigationLink(destination: RecallPractise()) {
-                                Image(systemName: "play.fill")
-                                    .frame(width: 24, height: 24)
-                            }
-                            .buttonStyle(CuteButtonStyle(hue: 0.48))
-                        }
-
-                        NavigationLink(destination: CreateNewRenshuu()) {
-                            Image(systemName: "plus")
-                                .frame(width: 24, height: 24)
-                        }
-                        .buttonStyle(CuteButtonStyle(hue: 0.48))
-                    }
-                    .scenePadding()
-                }
+                RenshuuList()
             }
+
+            VStack {
+                if !renshuus.isEmpty {
+                    NavigationLink(destination: RecallPractise()) {
+                        Image(systemName: "play.fill")
+                            .frame(width: 24, height: 24)
+                    }
+                    .buttonStyle(CuteButtonStyle(hue: .appHue))
+                }
+
+                NavigationLink(destination: CreateNewRenshuu()) {
+                    Image(systemName: "plus")
+                        .frame(width: 24, height: 24)
+                }
+                .buttonStyle(CuteButtonStyle(hue: .appHue))
+            }
+            .scenePadding()
         }
     }
 }

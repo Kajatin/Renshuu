@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CuteButtonStyleLight: ButtonStyle {
-    var hue: Double
+    var hue: CGFloat
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label

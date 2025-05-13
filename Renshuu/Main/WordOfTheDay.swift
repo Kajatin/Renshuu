@@ -29,11 +29,11 @@ struct WordOfTheDay: View {
         .frame(maxWidth: .infinity)
         .background(
             Rectangle()
-                .fill(Color(UIColor(hue: 0.48, saturation: 0.8, brightness: 0.3, alpha: 1)))
+                .fill(Color.appHighSaturation)
                 .shadow(color: .neutral950.opacity(0.2), radius: 8, x: 0, y: 4)
                 .ignoresSafeArea(.all, edges: .top)
         )
-        .foregroundStyle(Color(UIColor(hue: 0.48, saturation: 0.2, brightness: 1, alpha: 1)))
+        .foregroundStyle(Color.appLowSaturation)
     }
 }
 
