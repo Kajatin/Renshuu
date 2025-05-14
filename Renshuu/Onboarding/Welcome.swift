@@ -13,32 +13,38 @@ struct Welcome: View {
             Color.appLowSaturation
                 .ignoresSafeArea(.all, edges: .all)
 
-            VStack {
-                Text("Welcome")
-                    .foregroundStyle(Color(UIColor(hue: .appHue, saturation: 0.7, brightness: 0.4, alpha: 1)))
-                    .font(.system(size: 24, design: .serif))
-                    .padding(.top, 20)
+            GeometryReader { geo in
+                VStack(spacing: 40) {
+                    Text("Welcome")
+                        .foregroundStyle(Color.appHighSaturation)
+                        .font(.system(size: 36, weight: .medium, design: .serif))
+                        .padding(.top, 40)
 
-                Spacer()
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 20) {
+                            Group {
+                                Text("Renshuu helps you learn new words and phrases.")
+                                Text("It uses a simple algorithm to determine which words should be shown based on your progress.")
+                                Text("You’ll rate how easily you recalled a word after seeing it. The better you are at recalling a word the less frequently Renshuu will show it to you.")
+                            }
+                            .foregroundStyle(.neutral950)
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: geo.size.width * 0.8)
+                        }
+                    }
 
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Renshuu helps you learn new words and phrases.")
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("Start by adding your first word or phrase.")
+                            .foregroundStyle(Color.appHighSaturation)
+                            .fontDesign(.serif)
 
-                    Text("It uses a simple algorithm to determine which words should be presented to you based on how well you know them.")
-
-                    Text("After a word is presented to you, you'll have to think of its meaning and then provide a score for how easily, if at all, you could recall it.")
-
-                    Text("Start by adding your first word or phrase.")
+                        NavigationLink(destination: CreateNewRenshuu(isOnboarding: true)) {
+                            Text("Continue")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(CuteButtonStyle(hue: .appHue))
+                    }
                 }
-                .foregroundStyle(Color(UIColor(hue: .appHue, saturation: 0.7, brightness: 0.4, alpha: 1)))
-
-                Spacer()
-
-                NavigationLink(destination: CreateNewRenshuu(isOnboarding: true)) {
-                    Text("Continue")
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(CuteButtonStyle(hue: .appHue))
             }
             .padding()
         }
