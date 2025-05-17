@@ -22,11 +22,14 @@ struct RenshuuApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+    
+    var notificationsManager = NotificationsManager()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
+        .environment(notificationsManager)
         .modelContainer(sharedModelContainer)
     }
 }

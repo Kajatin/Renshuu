@@ -40,10 +40,21 @@ struct Main: View {
             }
             .scenePadding()
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink(destination: Settings()) {
+                    Image(systemName: "gear")
+                        .frame(width: 24, height: 24)
+                }
+                .buttonStyle(LowKeyButtonStyle(hue: .appHue))
+            }
+        }
     }
 }
 
 #Preview {
-    Main()
-        .modelContainer(for: Renshuu.self, inMemory: true)
+    NavigationStack {
+        Main()
+    }
+    .modelContainer(for: Renshuu.self, inMemory: true)
 }

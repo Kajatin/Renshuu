@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension CGFloat {
-    static let appHue: CGFloat = 0.23
+    static let appHue: CGFloat = 0.54
 }
 
 extension Color {
