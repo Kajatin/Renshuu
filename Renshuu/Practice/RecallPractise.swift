@@ -9,6 +9,8 @@ import SwiftData
 import SwiftUI
 
 struct RecallPractise: View {
+    @AppStorage("reversedPracticeOrder") var reversedPracticeOrder: Bool = false
+    
     @Environment(\.modelContext) private var context
 
     @State private var score = 3.0
@@ -42,12 +44,12 @@ struct RecallPractise: View {
 
                 if let renshuu = renshuus.first {
                     VStack(spacing: 32) {
-                        Text(renshuu.original)
+                        Text(reversedPracticeOrder ? renshuu.translation : renshuu.original)
                             .foregroundStyle(Color(UIColor(hue: randomHue, saturation: 0.8, brightness: 0.3, alpha: 1)))
                             .font(.system(size: 32, weight: .medium, design: .serif))
 
                         if showResult {
-                            Text(renshuu.translation)
+                            Text(reversedPracticeOrder ? renshuu.original : renshuu.translation)
                                 .foregroundStyle(Color(UIColor(hue: randomHue, saturation: 0.7, brightness: 0.4, alpha: 1)))
                                 .font(.system(size: 32, weight: .light, design: .serif))
                         }
