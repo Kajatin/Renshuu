@@ -23,7 +23,7 @@ struct CreateNewRenshuu: View {
 
     var body: some View {
         ZStack(alignment: .topLeading) {
-            Color.appLowSaturation
+            Color.neutral50
                 .ignoresSafeArea(.all, edges: .all)
 
             VStack {
@@ -33,7 +33,7 @@ struct CreateNewRenshuu: View {
                     VStack(alignment: .leading) {
                         Text("Word")
                             .font(.system(size: 14, weight: .light))
-                            .foregroundStyle(.neutral600)
+                            .foregroundStyle(.neutral500)
 
                         TextField("Enter the original word", text: $original)
                             .textInputAutocapitalization(.never)
@@ -43,7 +43,7 @@ struct CreateNewRenshuu: View {
                     VStack(alignment: .leading) {
                         Text("Meaning")
                             .font(.system(size: 14, weight: .light))
-                            .foregroundStyle(.neutral600)
+                            .foregroundStyle(.neutral500)
 
                         TextField("Enter the meaning of the word", text: $translation)
                             .textInputAutocapitalization(.never)

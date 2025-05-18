@@ -20,6 +20,6 @@ struct UnderlinedTextFieldStyle: TextFieldStyle {
                         .foregroundStyle(.neutral500)
                 }
             )
-            .foregroundStyle(Color.appHighSaturation)
+            .foregroundStyle(Color.neutral950)
     }
 }
