@@ -36,7 +36,7 @@ struct Welcome: View {
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Start by adding your first word or phrase.")
                             .foregroundStyle(Color.appHighSaturation)
-                            .fontDesign(.serif)
+                            .font(.system(size: 16, design: .serif))
 
                         NavigationLink(destination: CreateNewRenshuu(isOnboarding: true)) {
                             Text("Continue")

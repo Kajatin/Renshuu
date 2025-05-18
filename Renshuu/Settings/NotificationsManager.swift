@@ -31,13 +31,21 @@ class NotificationsManager {
         determineAuthorizationStatus()
     }
 
-    func requestAuthorization() {
+    func requestAuthorization(completionHandler: ((Bool) -> Void)? = nil) {
         determineAuthorizationStatus()
 
-        guard authorizationStatus == .notDetermined else { return }
+        guard authorizationStatus == .notDetermined else {
+            if let completionHandler = completionHandler {
+                completionHandler(authorizationStatus == .authorized)
+            }
+            return
+        }
 
-        center.requestAuthorization(options: [.alert, .sound]) { _, _ in
+        center.requestAuthorization(options: [.alert, .sound]) { granted, _ in
             self.determineAuthorizationStatus()
+            if let completionHandler = completionHandler {
+                completionHandler(granted)
+            }
         }
     }
 

@@ -17,30 +17,30 @@ struct Settings: View {
 
     var body: some View {
         ZStack(alignment: .topLeading) {
-            Color.stone50
+            Color.neutral50
                 .ignoresSafeArea(.all, edges: .all)
 
             Form {
                 Section(
-                    header: Text("Practice").foregroundStyle(.stone500),
-                    footer: Text("Reverses the order in which the word pair is shown during practice. Defaults to showing the foreign word first.").foregroundStyle(.stone500)
+                    header: Text("Practice").foregroundStyle(.neutral500),
+                    footer: Text("Reverses the order in which the word pair is shown during practice. Defaults to showing the foreign word first.").foregroundStyle(.neutral500)
                 ) {
                     Toggle("Reversed order", isOn: $reversedPracticeOrder)
-                        .foregroundColor(.stone950)
+                        .foregroundColor(.neutral950)
                 }
-                .listRowBackground(Color.stone100)
+                .listRowBackground(Color.neutral100)
 
-                Section(header: Text("Notifications").foregroundStyle(.stone500)) {
+                Section(header: Text("Notifications").foregroundStyle(.neutral500)) {
                     @Bindable var notificationsManager = notificationsManager
                     Toggle("Practice reminder", isOn: $notificationsManager.dailyRemindersEnabled)
-                        .foregroundColor(.stone950)
+                        .foregroundColor(.neutral950)
                         .onChange(of: notificationsManager.dailyRemindersEnabled) { _, isOn in
                             if isOn {
                                 notificationsManager.requestAuthorization()
                             }
                         }
                 }
-                .listRowBackground(Color.stone100)
+                .listRowBackground(Color.neutral100)
 
                 Section {
                     Button(role: .destructive) {
@@ -49,10 +49,10 @@ struct Settings: View {
                         Text("Delete all words")
                     }
                 }
-                .listRowBackground(Color.stone100)
+                .listRowBackground(Color.neutral100)
             }
             .tint(.appHighSaturation)
-            .tint(.stone900)
+            .tint(.neutral900)
             .scrollContentBackground(.hidden)
         }
         .navigationTitle("Settings")
