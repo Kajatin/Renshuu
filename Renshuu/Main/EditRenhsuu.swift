@@ -15,7 +15,7 @@ struct EditRenhsuu: View {
 
     var body: some View {
         ZStack {
-            Color.appLowSaturation
+            Color.neutral50
                 .ignoresSafeArea(.all, edges: .all)
 
             VStack {
@@ -46,33 +46,33 @@ struct EditRenhsuu: View {
 
                 Spacer()
 
-                VStack(spacing: 12) {
-                    Button {
-                        withAnimation {
-                            try? modelContext.save()
-                            dismiss()
-                        }
-                    } label: {
-                        Text("Save")
-                            .frame(maxWidth: .infinity)
+                Button {
+                    withAnimation {
+                        try? modelContext.save()
+                        dismiss()
                     }
-                    .buttonStyle(CuteButtonStyle(hue: .appHue))
-
-                    Button {
-                        withAnimation {
-                            modelContext.delete(renshuu)
-                            dismiss()
-                        }
-                    } label: {
-                        Text("Delete")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(CuteButtonStyleLight(hue: .appHue))
+                } label: {
+                    Text("Save")
+                        .frame(maxWidth: .infinity)
                 }
+                .buttonStyle(CuteButtonStyle(hue: .appHue))
             }
             .padding()
         }
         .navigationTitle("Edit")
+        .toolbar {
+            ToolbarItem(placement: .destructiveAction) {
+                Button {
+                    withAnimation {
+                        modelContext.delete(renshuu)
+                        dismiss()
+                    }
+                } label: {
+                    Image(systemName: "trash")
+                }
+                .tint(.red500)
+            }
+        }
     }
 }
 

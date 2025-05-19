@@ -10,17 +10,17 @@ import SwiftUI
 struct Welcome: View {
     var body: some View {
         ZStack(alignment: .topLeading) {
-            Color.appLowSaturation
+            Color.neutral50
                 .ignoresSafeArea(.all, edges: .all)
 
             GeometryReader { geo in
                 VStack(spacing: 40) {
-                    Text("Welcome")
-                        .foregroundStyle(Color.appHighSaturation)
-                        .font(.system(size: 36, weight: .medium, design: .serif))
-                        .padding(.top, 40)
-
                     ScrollView {
+                        Text("Welcome")
+                            .foregroundStyle(Color.appHighSaturation)
+                            .font(.system(size: 36, weight: .medium, design: .serif))
+                            .padding(.vertical, 60)
+
                         VStack(alignment: .leading, spacing: 20) {
                             Group {
                                 Text("Renshuu helps you learn new words and phrases.")
@@ -33,10 +33,9 @@ struct Welcome: View {
                         }
                     }
 
-                    VStack(alignment: .leading, spacing: 16) {
+                    VStack(alignment: .center, spacing: 24) {
                         Text("Start by adding your first word or phrase.")
                             .foregroundStyle(Color.appHighSaturation)
-                            .font(.system(size: 16, design: .serif))
 
                         NavigationLink(destination: CreateNewRenshuu(isOnboarding: true)) {
                             Text("Continue")

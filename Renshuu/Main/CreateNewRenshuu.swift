@@ -75,19 +75,24 @@ struct CreateNewRenshuu: View {
             .padding()
         }
         .navigationTitle("New")
-        .sheet(isPresented: $showNotificationsSheet, onDismiss: { askForNotifications = false; dismiss() }) {
+        .sheet(
+            isPresented: $showNotificationsSheet,
+            onDismiss: {
+                askForNotifications = false; dismiss()
+            }
+        ) {
             ZStack {
                 Color.neutral50
                     .ignoresSafeArea(.all, edges: .all)
 
                 GeometryReader { geo in
                     VStack(spacing: 40) {
-                        Text("Daily Reminders")
-                            .foregroundStyle(Color.appHighSaturation)
-                            .font(.system(size: 36, weight: .medium, design: .serif))
-                            .padding(.top, 40)
-
                         ScrollView {
+                            Text("Daily Reminders")
+                                .foregroundStyle(Color.appHighSaturation)
+                                .font(.system(size: 36, weight: .medium, design: .serif))
+                                .padding(.vertical, 60)
+
                             VStack(alignment: .leading, spacing: 20) {
                                 Group {
                                     Text("Enable notifications and get daily reminders to help you practice.")
@@ -106,7 +111,7 @@ struct CreateNewRenshuu: View {
                                         if granted {
                                             notificationsManager.dailyRemindersEnabled = true
                                         }
-                                        
+
                                         showNotificationsSheet.toggle()
                                     }
                                 }
