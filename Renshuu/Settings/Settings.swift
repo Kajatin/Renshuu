@@ -30,7 +30,10 @@ struct Settings: View {
                 }
                 .listRowBackground(Color.neutral100)
 
-                Section(header: Text("Notifications").foregroundStyle(.neutral500)) {
+                Section(
+                    header: Text("Notifications").foregroundStyle(.neutral500),
+                    footer: Text("Daily notifications simply remind you to practice your vocabulary. Configure a time for the reminders that suits you best.").foregroundStyle(.neutral500)
+                ) {
                     @Bindable var notificationsManager = notificationsManager
                     Toggle("Practice reminder", isOn: $notificationsManager.dailyRemindersEnabled)
                         .foregroundColor(.neutral950)
@@ -39,6 +42,11 @@ struct Settings: View {
                                 notificationsManager.requestAuthorization()
                             }
                         }
+                    
+                    DatePicker(selection: $notificationsManager.dailyReminderDate, displayedComponents: .hourAndMinute) {
+                        Text("Reminder time")
+                    }
+                    .foregroundColor(.neutral950)
                 }
                 .listRowBackground(Color.neutral100)
 

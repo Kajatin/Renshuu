@@ -11,15 +11,13 @@ import SwiftUI
 class NotificationsManager {
     var dailyRemindersEnabled: Bool {
         didSet {
-            print("didset")
-            UserDefaults.standard.set(dailyRemindersEnabled, forKey: "dailyRemindersEnabled")
-            
-            if dailyRemindersEnabled {
-                scheduleDailyReminder()
-            } else {
-                center.removePendingNotificationRequests(withIdentifiers: ["RenshuuDailyReminder"])
-                print("cleared notifications")
-            }
+            updateStoreAndRemindersSchedule(value: dailyRemindersEnabled, forKey: "dailyRemindersEnabled")
+        }
+    }
+
+    var dailyReminderDate: Date {
+        didSet {
+            updateStoreAndRemindersSchedule(value: dailyReminderDate.timeIntervalSince1970, forKey: "dailyReminderDate")
         }
     }
 
@@ -28,6 +26,14 @@ class NotificationsManager {
 
     init() {
         dailyRemindersEnabled = UserDefaults.standard.bool(forKey: "dailyRemindersEnabled")
+
+        let timestamp = UserDefaults.standard.double(forKey: "dailyReminderDate")
+        if timestamp == 0 {
+            dailyReminderDate = Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: Date())!
+        } else {
+            dailyReminderDate = Date(timeIntervalSince1970: timestamp)
+        }
+
         determineAuthorizationStatus()
     }
 
@@ -53,7 +59,7 @@ class NotificationsManager {
         center.getNotificationSettings { settings in
             DispatchQueue.main.async {
                 self.authorizationStatus = settings.authorizationStatus
-                
+
                 if settings.authorizationStatus == .denied {
                     self.dailyRemindersEnabled = false
                 }
@@ -68,15 +74,27 @@ class NotificationsManager {
         content.title = "Reminder"
         content.body = "Time to practice!"
 
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute], from: dailyReminderDate)
+
         var dateComponents = DateComponents()
-        dateComponents.hour = 9
-        dateComponents.minute = 0
+        dateComponents.hour = components.hour
+        dateComponents.minute = components.minute
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
 
         let request = UNNotificationRequest(identifier: "RenshuuDailyReminder", content: content, trigger: trigger)
+
         center.add(request)
-        
-        print("scheudled notification")
+    }
+
+    private func updateStoreAndRemindersSchedule(value: Any?, forKey key: String) {
+        UserDefaults.standard.set(value, forKey: key)
+
+        if dailyRemindersEnabled {
+            scheduleDailyReminder()
+        } else {
+            center.removePendingNotificationRequests(withIdentifiers: ["RenshuuDailyReminder"])
+        }
     }
 }
