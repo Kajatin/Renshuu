@@ -45,7 +45,7 @@ struct Main: View {
                 NavigationLink(destination: Settings()) {
                     Image(systemName: "gear")
                 }
-                .buttonStyle(LowKeyButtonStyle(hue: .appHue))
+                .tint(.neutral950)
             }
         }
     }
