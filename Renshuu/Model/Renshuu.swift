@@ -52,6 +52,6 @@ final class Renshuu: Identifiable {
             easinessFactor = 1.3
         }
 
-        dueDate = Calendar.current.date(byAdding: .day, value: interval, to: Date())!
+        dueDate = Calendar.current.date(byAdding: .day, value: interval, to: Date.now)!
     }
 }

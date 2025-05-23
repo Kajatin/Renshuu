@@ -10,7 +10,7 @@ import SwiftUI
 
 struct RecallPractise: View {
     @AppStorage("reversedPracticeOrder") var reversedPracticeOrder: Bool = false
-    
+
     @Environment(\.modelContext) private var context
 
     @State private var score = 3.0
@@ -23,7 +23,7 @@ struct RecallPractise: View {
 
         var descriptor = FetchDescriptor<Renshuu>(
             predicate: #Predicate {
-                $0.dueDate >= startOfToday && $0.dueDate < endOfToday
+                $0.dueDate < endOfToday
             },
             sortBy: [SortDescriptor(\.dueDate, order: .forward)]
         )
