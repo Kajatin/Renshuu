@@ -11,10 +11,10 @@ import SwiftData
 @Model
 final class Renshuu: Identifiable {
     var id = UUID()
-    
+
     var original: String = ""
     var translation: String = ""
-    
+
     /// It determines how quickly the inter-repetition interval grows.
     var easinessFactor: Double = 2.5
     /// Length of time in days until this item needs to be shown again.
@@ -23,12 +23,12 @@ final class Renshuu: Identifiable {
     var repetitions: Int = 0
     /// Date to show this item again.
     var dueDate: Date = Date()
-    
-    init (original: String, translation: String) {
+
+    init(original: String, translation: String) {
         self.original = original
         self.translation = translation
     }
-    
+
     func update(score: Int) {
         let q = max(0, min(5, score))
 

@@ -10,6 +10,7 @@ import SwiftUI
 
 struct RecallPractise: View {
     @AppStorage("reversedPracticeOrder") var reversedPracticeOrder: Bool = false
+    @State private var toggleReversedOrder: Bool = false
 
     @Environment(\.modelContext) private var context
 
@@ -73,6 +74,11 @@ struct RecallPractise: View {
                                     score = 3
                                     randomHue = Double.random(in: 0..<1)
                                     try? context.save()
+
+                                    if toggleReversedOrder {
+                                        reversedPracticeOrder.toggle()
+                                        toggleReversedOrder = false
+                                    }
                                 }
                             } else {
                                 withAnimation {
@@ -84,6 +90,20 @@ struct RecallPractise: View {
                                 .frame(maxWidth: .infinity)
                         }
                         .buttonStyle(CuteButtonStyle(hue: randomHue))
+                    }
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
+                                withAnimation {
+                                    toggleReversedOrder.toggle()
+                                }
+                            } label: {
+                                Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90")
+                            }
+                            .foregroundStyle(toggleReversedOrder ? Color(UIColor(hue: randomHue, saturation: 0.7, brightness: 0.4, alpha: 1)) : .neutral950)
+                            .fontWeight(toggleReversedOrder ? .medium : .regular)
+                            .symbolEffect(toggleReversedOrder ? .rotate : .rotate.counterClockwise, options: .speed(2.5), value: toggleReversedOrder)
+                        }
                     }
                 } else {
                     VStack(spacing: 32) {
@@ -108,6 +128,8 @@ struct RecallPractise: View {
 }
 
 #Preview {
-    return RecallPractise()
-        .modelContainer(for: Renshuu.self, inMemory: true)
+    NavigationStack {
+        RecallPractise()
+    }
+    .modelContainer(for: Renshuu.self, inMemory: true)
 }

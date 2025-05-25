@@ -11,8 +11,19 @@ import SwiftUI
 struct RenshuuList: View {
     @Query(sort: \Renshuu.dueDate, order: .reverse) var renshuus: [Renshuu]
 
+    @Binding var isSearchPresented: Bool
+
+    @State private var searchText: String = ""
+
     var groupedRenshuus: [(key: Date, value: [Renshuu])] {
-        Dictionary(grouping: renshuus) { renshuu in
+        let filtered =
+            searchText.isEmpty
+            ? renshuus
+            : renshuus.filter {
+                $0.original.localizedCaseInsensitiveContains(searchText) || $0.translation.localizedCaseInsensitiveContains(searchText)
+            }
+
+        return Dictionary(grouping: filtered) { renshuu in
             Calendar.current.startOfDay(for: renshuu.dueDate)
         }
         .sorted { $0.key < $1.key }
@@ -39,10 +50,14 @@ struct RenshuuList: View {
         }
         .listStyle(.plain)
         .navigationTitle("Collection")
+        .navigationBarTitleDisplayMode(.automatic)
+        .searchable(text: $searchText, isPresented: $isSearchPresented)
     }
 }
 
 #Preview {
-    RenshuuList()
-        .modelContainer(for: Renshuu.self, inMemory: true)
+    NavigationStack {
+        RenshuuList(isSearchPresented: .constant(false))
+    }
+    .modelContainer(for: Renshuu.self, inMemory: true)
 }

@@ -13,14 +13,16 @@ struct Main: View {
 
     @Environment(\.modelContext) private var modelContext
 
+    @State private var showSearch: Bool = false
+
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             VStack(alignment: .leading, spacing: 0) {
-//                if !renshuus.isEmpty {
-//                    WordOfTheDay()
-//                }
+                //                if !renshuus.isEmpty {
+                //                    WordOfTheDay()
+                //                }
 
-                RenshuuList()
+                RenshuuList(isSearchPresented: $showSearch)
             }
 
             VStack {
@@ -42,18 +44,29 @@ struct Main: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                NavigationLink(destination: Settings()) {
-                    Image(systemName: "gear")
+                Button {
+                    showSearch.toggle()
+                } label: {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundStyle(.neutral950)
                 }
-                .tint(.neutral950)
+            }
+
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink(destination: Settings()) {
+                    Image(systemName: "switch.2")
+                        .foregroundStyle(.neutral950)
+                }
             }
         }
     }
 }
 
 #Preview {
+    var notificationsManager = NotificationsManager()
     NavigationStack {
         Main()
     }
     .modelContainer(for: Renshuu.self, inMemory: true)
+    .environment(notificationsManager)
 }
