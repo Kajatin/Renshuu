@@ -34,8 +34,18 @@ struct RecallPractise: View {
     }
 
     @Query(RecallPractise.fetchDescriptor) private var renshuus: [Renshuu]
-
+    
+    @ViewBuilder
     var body: some View {
+        if #available(iOS 26.0, *) {
+            recallStack.tabBarMinimizeBehavior(.automatic)
+        } else {
+            recallStack
+        }
+    }
+    
+    @ViewBuilder
+    var recallStack: some View {
         ZStack(alignment: .topLeading) {
             Color(UIColor(hue: randomHue, saturation: 0.2, brightness: 1, alpha: 1))
                 .ignoresSafeArea(.all, edges: .all)
@@ -100,26 +110,17 @@ struct RecallPractise: View {
                             } label: {
                                 Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90")
                             }
-                            .foregroundStyle(toggleReversedOrder ? Color(UIColor(hue: randomHue, saturation: 0.7, brightness: 0.4, alpha: 1)) : .neutral950)
+                            .foregroundStyle(toggleReversedOrder ? Color(UIColor(hue: randomHue, saturation: 0.7, brightness: 0.4, alpha: 1)) : .black)
                             .fontWeight(toggleReversedOrder ? .medium : .regular)
                             .symbolEffect(toggleReversedOrder ? .rotate : .rotate.counterClockwise, options: .speed(2.5), value: toggleReversedOrder)
                         }
                     }
                 } else {
-                    VStack(spacing: 32) {
-                        Text("All caught up")
-                            .foregroundStyle(Color(UIColor(hue: randomHue, saturation: 0.8, brightness: 0.3, alpha: 1)))
-                            .font(.system(size: 32, weight: .medium, design: .serif))
-
+                    ContentUnavailableView {
+                        Label("All Caught Up", systemImage: "checkmark.circle")
+                    } description: {
                         Text("Come back later to practice")
-                            .foregroundStyle(Color(UIColor(hue: randomHue, saturation: 0.7, brightness: 0.4, alpha: 1)))
-                            .font(.system(size: 26, weight: .light, design: .serif))
                     }
-
-                    Spacer()
-
-                    Color.clear
-                        .frame(maxWidth: .infinity, maxHeight: 0)
                 }
             }
             .padding()

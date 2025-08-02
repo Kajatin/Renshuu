@@ -5,6 +5,7 @@
 //  Created by Roland Kajatin on 11/05/2025.
 //
 
+//import FoundationModels
 import SwiftUI
 
 struct EditRenhsuu: View {
@@ -13,65 +14,62 @@ struct EditRenhsuu: View {
 
     @Bindable var renshuu: Renshuu
 
+    @State private var showDeletionAlert = false
+
     var body: some View {
-        ZStack {
-            Color.neutral50
-                .ignoresSafeArea(.all, edges: .all)
+        Form {
+            VStack(alignment: .leading) {
+                Text("Word")
+                    .foregroundStyle(.secondary)
 
-            VStack {
-                Spacer()
+                TextField("Enter the original word", text: $renshuu.original)
+                    .textInputAutocapitalization(.never)
+                    .disableAutocorrection(true)
+            }
 
-                VStack(spacing: 32) {
-                    VStack(alignment: .leading) {
-                        Text("Word")
-                            .font(.system(size: 14, weight: .light))
-                            .foregroundStyle(.neutral600)
+            VStack(alignment: .leading) {
+                Text("Meaning")
+                    .foregroundStyle(.secondary)
 
-                        TextField("Enter the original word", text: $renshuu.original)
-                            .textInputAutocapitalization(.never)
-                            .disableAutocorrection(true)
-                    }
-
-                    VStack(alignment: .leading) {
-                        Text("Meaning")
-                            .font(.system(size: 14, weight: .light))
-                            .foregroundStyle(.neutral600)
-
-                        TextField("Enter the meaning of the word", text: $renshuu.translation)
-                            .textInputAutocapitalization(.never)
-                            .disableAutocorrection(true)
-                    }
+                TextField("Enter the meaning of the word", text: $renshuu.translation)
+                    .textInputAutocapitalization(.never)
+                    .disableAutocorrection(true)
+            }
+        }
+        .navigationTitle("Edit")
+        .toolbar {
+            ToolbarItem {
+                Button {
+                    showDeletionAlert.toggle()
+                } label: {
+                    Image(systemName: "trash")
                 }
-                .textFieldStyle(UnderlinedTextFieldStyle())
+            }
 
-                Spacer()
+            if #available(iOS 26.0, *) {
+                ToolbarSpacer(.fixed)
+            }
 
+            ToolbarItem {
                 Button {
                     withAnimation {
                         try? modelContext.save()
                         dismiss()
                     }
                 } label: {
-                    Text("Save")
-                        .frame(maxWidth: .infinity)
+                    Image(systemName: "checkmark")
                 }
-                .buttonStyle(CuteButtonStyle(hue: .appHue))
             }
-            .padding()
         }
-        .navigationTitle("Edit")
-        .toolbar {
-            ToolbarItem(placement: .destructiveAction) {
-                Button {
-                    withAnimation {
-                        modelContext.delete(renshuu)
-                        dismiss()
-                    }
-                } label: {
-                    Image(systemName: "trash")
+        .alert("Delete \"\(renshuu.original)\"?", isPresented: $showDeletionAlert) {
+            Button("Delete", role: .destructive) {
+                withAnimation {
+                    modelContext.delete(renshuu)
+                    dismiss()
                 }
-                .tint(.red500)
             }
+        } message: {
+            Text("This action will permanently delete the word.")
         }
     }
 }
@@ -88,5 +86,7 @@ private struct PreviewContainer: View {
 }
 
 #Preview {
-    PreviewContainer()
+    NavigationStack {
+        PreviewContainer()
+    }
 }

@@ -16,52 +16,38 @@ struct Settings: View {
     @Environment(NotificationsManager.self) var notificationsManager
 
     var body: some View {
-        ZStack(alignment: .topLeading) {
-            Color.neutral50
-                .ignoresSafeArea(.all, edges: .all)
-
-            Form {
-                Section(
-                    header: Text("Practice").foregroundStyle(.neutral500),
-                    footer: Text("Reverses the order in which the word pair is shown during practice. Defaults to showing the foreign word first.").foregroundStyle(.neutral500)
-                ) {
-                    Toggle("Reversed order", isOn: $reversedPracticeOrder)
-                        .foregroundColor(.neutral950)
-                }
-                .listRowBackground(Color.neutral100)
-
-                Section(
-                    header: Text("Notifications").foregroundStyle(.neutral500),
-                    footer: Text("Daily notifications simply remind you to practice your vocabulary. Configure a time for the reminders that suits you best.").foregroundStyle(.neutral500)
-                ) {
-                    @Bindable var notificationsManager = notificationsManager
-                    Toggle("Practice reminder", isOn: $notificationsManager.dailyRemindersEnabled)
-                        .foregroundColor(.neutral950)
-                        .onChange(of: notificationsManager.dailyRemindersEnabled) { _, isOn in
-                            if isOn {
-                                notificationsManager.requestAuthorization()
-                            }
-                        }
-                    
-                    DatePicker(selection: $notificationsManager.dailyReminderDate, displayedComponents: .hourAndMinute) {
-                        Text("Reminder time")
-                    }
-                    .foregroundColor(.neutral950)
-                }
-                .listRowBackground(Color.neutral100)
-
-                Section {
-                    Button(role: .destructive) {
-                        showDeleteAllDataAlert.toggle()
-                    } label: {
-                        Text("Delete all words")
-                    }
-                }
-                .listRowBackground(Color.neutral100)
+        Form {
+            Section(
+                header: Text("Practice"),
+                footer: Text("Reverses the order in which the word pair is shown during practice. Defaults to showing the foreign word first.")
+            ) {
+                Toggle("Reversed order", isOn: $reversedPracticeOrder)
             }
-            .tint(.appHighSaturation)
-            .tint(.neutral900)
-            .scrollContentBackground(.hidden)
+
+            Section(
+                header: Text("Notifications"),
+                footer: Text("Daily notifications simply remind you to practice your vocabulary. Configure a time for the reminders that suits you best.")
+            ) {
+                @Bindable var notificationsManager = notificationsManager
+                Toggle("Practice reminder", isOn: $notificationsManager.dailyRemindersEnabled)
+                    .onChange(of: notificationsManager.dailyRemindersEnabled) { _, isOn in
+                        if isOn {
+                            notificationsManager.requestAuthorization()
+                        }
+                    }
+
+                DatePicker(selection: $notificationsManager.dailyReminderDate, displayedComponents: .hourAndMinute) {
+                    Text("Reminder time")
+                }
+            }
+
+            Section {
+                Button(role: .destructive) {
+                    showDeleteAllDataAlert.toggle()
+                } label: {
+                    Text("Delete all words")
+                }
+            }
         }
         .navigationTitle("Settings")
         .alert("Delete all words?", isPresented: $showDeleteAllDataAlert) {

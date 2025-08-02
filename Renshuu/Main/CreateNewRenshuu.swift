@@ -19,41 +19,37 @@ struct CreateNewRenshuu: View {
     @State private var translation: String = ""
     @State private var showNotificationsSheet = false
 
+    @FocusState private var originalInputFocused: Bool
+
     var isOnboarding = false
 
     var body: some View {
-        ZStack(alignment: .topLeading) {
-            Color.neutral50
-                .ignoresSafeArea(.all, edges: .all)
+        Form {
+            VStack(alignment: .leading) {
+                Text("Word")
+                    .foregroundStyle(.secondary)
 
-            VStack {
-                Spacer()
+                TextField("Enter the original word", text: $original)
+                    .textInputAutocapitalization(.never)
+                    .disableAutocorrection(true)
+                    .focused($originalInputFocused)
+            }
 
-                VStack(spacing: 32) {
-                    VStack(alignment: .leading) {
-                        Text("Word")
-                            .font(.system(size: 14, weight: .light))
-                            .foregroundStyle(.neutral500)
+            VStack(alignment: .leading) {
+                Text("Meaning")
+                    .foregroundStyle(.secondary)
 
-                        TextField("Enter the original word", text: $original)
-                            .textInputAutocapitalization(.never)
-                            .disableAutocorrection(true)
-                    }
-
-                    VStack(alignment: .leading) {
-                        Text("Meaning")
-                            .font(.system(size: 14, weight: .light))
-                            .foregroundStyle(.neutral500)
-
-                        TextField("Enter the meaning of the word", text: $translation)
-                            .textInputAutocapitalization(.never)
-                            .disableAutocorrection(true)
-                    }
-                }
-                .textFieldStyle(UnderlinedTextFieldStyle())
-
-                Spacer()
-
+                TextField("Enter the meaning of the word", text: $translation)
+                    .textInputAutocapitalization(.never)
+                    .disableAutocorrection(true)
+            }
+        }
+        .navigationTitle("New")
+        .onAppear {
+            originalInputFocused.toggle()
+        }
+        .toolbar {
+            ToolbarItem {
                 Button {
                     withAnimation {
                         modelContext.insert(Renshuu(original: original, translation: translation))
@@ -65,73 +61,66 @@ struct CreateNewRenshuu: View {
                         }
                     }
                 } label: {
-                    Text(isOnboarding ? "Get started" : "Save")
-                        .frame(maxWidth: .infinity)
+                    Image(systemName: isOnboarding ? "chevron.right" : "checkmark")
                 }
-                .buttonStyle(CuteButtonStyle(hue: .appHue))
-                .disabled(original.isEmpty || translation.isEmpty)
-                .opacity(original.isEmpty || translation.isEmpty ? 0.7 : 1.0)
             }
-            .padding()
         }
-        .navigationTitle("New")
         .sheet(
             isPresented: $showNotificationsSheet,
             onDismiss: {
                 askForNotifications = false; dismiss()
             }
         ) {
-            ZStack {
-                Color.neutral50
-                    .ignoresSafeArea(.all, edges: .all)
+            VStack(spacing: 24) {
+                Spacer()
+                
+                Image("NotificationScreenshot")
+                    .resizable()
+                    .scaledToFit()
+                    .clipShape(RoundedRectangle(cornerRadius: 28))
+                
+                Text("Daily Reminders")
+                    .font(.largeTitle.bold())
+                    .padding(.vertical)
+                    .foregroundStyle(.accent.gradient)
 
-                GeometryReader { geo in
-                    VStack(spacing: 40) {
-                        ScrollView {
-                            Text("Daily Reminders")
-                                .foregroundStyle(Color.appHighSaturation)
-                                .font(.system(size: 36, weight: .medium, design: .serif))
-                                .padding(.vertical, 60)
+                Text("Enable notifications and get daily reminders to help you practice. You’ll be much more likely to remember new words and phrases if you practice regularly.")
+                    .padding(.horizontal)
+                    .multilineTextAlignment(.center)
+                
+                Spacer()
 
-                            VStack(alignment: .leading, spacing: 20) {
-                                Group {
-                                    Text("Enable notifications and get daily reminders to help you practice.")
-                                    Text("You’ll be much more likely to remember new words and phrases if you practice regularly.")
+                Button {
+                    withAnimation {
+                        notificationsManager.requestAuthorization() { granted in
+                            DispatchQueue.main.async {
+                                if granted {
+                                    notificationsManager.dailyRemindersEnabled = true
                                 }
-                                .foregroundStyle(.neutral950)
-                                .multilineTextAlignment(.center)
-                                .frame(maxWidth: geo.size.width * 0.8)
+
+                                showNotificationsSheet.toggle()
                             }
                         }
-
-                        Button {
-                            withAnimation {
-                                notificationsManager.requestAuthorization() { granted in
-                                    DispatchQueue.main.async {
-                                        if granted {
-                                            notificationsManager.dailyRemindersEnabled = true
-                                        }
-
-                                        showNotificationsSheet.toggle()
-                                    }
-                                }
-                            }
-                        } label: {
-                            Text("Enable")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(CuteButtonStyle(hue: .appHue))
                     }
+                } label: {
+                    Text("Enable")
+                        .frame(maxWidth: .infinity)
+                        .padding(10)
+                        .font(.headline)
                 }
-                .padding()
+                .buttonStyle(.bordered)
+                .tint(.accentColor)
             }
+            .scenePadding()
         }
     }
 }
 
 #Preview {
+    var notificationsManager = NotificationsManager()
     NavigationStack {
         CreateNewRenshuu()
     }
     .modelContainer(for: Renshuu.self, inMemory: true)
+    .environment(notificationsManager)
 }

@@ -11,18 +11,47 @@ import SwiftUI
 struct ContentView: View {
     @AppStorage("onboardingNeeded") var onboardingNeeded: Bool = true
 
+    @State private var searchText: String = ""
+
+    @ViewBuilder
     var body: some View {
-        NavigationStack {
-            if onboardingNeeded {
-                Welcome()
-            } else {
-                Main()
+        if #available(iOS 26.0, *) {
+            tabView.tabBarMinimizeBehavior(.onScrollDown)
+        } else {
+            tabView
+        }
+    }
+    
+    @ViewBuilder
+    var tabView: some View {
+        TabView {
+            Tab("Catalogue", systemImage: "books.vertical") {
+                RenshuuList()
             }
+
+            Tab("Practise", systemImage: "pencil.and.outline") {
+                RecallPractise()
+            }
+
+            Tab(role: .search) {
+                RenshuuList(searchText: searchText)
+            }
+        }
+        .searchable(text: $searchText)
+        .sheet(
+            isPresented: $onboardingNeeded,
+            onDismiss: {
+                onboardingNeeded = false
+            }
+        ) {
+            Welcome()
         }
     }
 }
 
 #Preview {
+    var notificationsManager = NotificationsManager()
     ContentView()
         .modelContainer(for: Renshuu.self, inMemory: true)
+        .environment(notificationsManager)
 }

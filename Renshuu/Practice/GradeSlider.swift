@@ -105,10 +105,7 @@ struct CustomSlider: View {
                     )
                     .shadow(radius: 4)
                     .gesture(
-                        DragGesture(
-                            minimumDistance: geometry.size.width
-                                / CGFloat(in_.upperBound)
-                        )
+                        DragGesture(minimumDistance: 0)
                         .onChanged({ value in
                             let newValue =
                                 ((Double(value.location.x) + 22)
@@ -132,6 +129,7 @@ struct CustomSlider: View {
 }
 
 #Preview {
+    @Previewable @State var sliderValue: Double = 3
     let randomHue: Double = 0.3
     return VStack(spacing: 24) {
         GradeSlider(
@@ -158,6 +156,10 @@ struct CustomSlider: View {
             color: Color.appHighSaturation,
             textColor: Color.appLowSaturation,
             value: .constant(5))
+        GradeSlider(
+            color: Color.appHighSaturation,
+            textColor: Color.appLowSaturation,
+            value: $sliderValue)
     }
     .scenePadding()
 }
