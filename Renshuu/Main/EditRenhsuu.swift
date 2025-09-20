@@ -75,7 +75,7 @@ struct EditRenhsuu: View {
 }
 
 private struct PreviewContainer: View {
-    @State private var renshuu = Renshuu(original: "til gengæld", translation: "on the other hand")
+    @State private var renshuu = Renshuu(original: "til gengæld", translation: "on the other hand", collection: Collection(title: "Example"))
 
     var body: some View {
         NavigationStack {

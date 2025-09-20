@@ -12,6 +12,8 @@ struct ContentView: View {
     @AppStorage("onboardingNeeded") var onboardingNeeded: Bool = true
 
     @State private var searchText: String = ""
+    
+    var collection: Collection
 
     @ViewBuilder
     var body: some View {
@@ -26,15 +28,19 @@ struct ContentView: View {
     var tabView: some View {
         TabView {
             Tab("Catalogue", systemImage: "books.vertical") {
-                RenshuuList()
+                RenshuuList(collection: collection)
             }
 
             Tab("Practise", systemImage: "pencil.and.outline") {
                 RecallPractise()
             }
+            
+            Tab("Settings", systemImage: "gear") {
+                Settings()
+            }
 
             Tab(role: .search) {
-                RenshuuList(searchText: searchText)
+                RenshuuList(collection: collection, searchText: searchText)
             }
         }
         .searchable(text: $searchText)
@@ -51,7 +57,8 @@ struct ContentView: View {
 
 #Preview {
     var notificationsManager = NotificationsManager()
-    ContentView()
+    var collection = Collection(title: "Example")
+    ContentView(collection: collection)
         .modelContainer(for: Renshuu.self, inMemory: true)
         .environment(notificationsManager)
 }

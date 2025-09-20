@@ -9,17 +9,22 @@ import SwiftData
 import SwiftUI
 
 struct RenshuuList: View {
+    var collection: Collection
     var searchText: String = ""
-    
+
     @Query(sort: \Renshuu.dueDate, order: .reverse) var renshuus: [Renshuu]
 
     private var groupedRenshuus: [(key: Date, value: [Renshuu])] {
-        let filtered =
+        var filtered =
             searchText.isEmpty
             ? renshuus
             : renshuus.filter {
                 $0.original.localizedCaseInsensitiveContains(searchText) || $0.translation.localizedCaseInsensitiveContains(searchText)
             }
+        
+        filtered = filtered.filter { renshuu in
+            renshuu.collection == collection
+        }
 
         return Dictionary(grouping: filtered) { renshuu in
             Calendar.current.startOfDay(for: renshuu.dueDate)
@@ -48,7 +53,7 @@ struct RenshuuList: View {
                         } description: {
                             Text("Words you add will appear here")
                         } actions: {
-                            NavigationLink(destination: CreateNewRenshuu()) {
+                            NavigationLink(destination: CreateNewRenshuu(collection: collection)) {
                                 Text("Add Your First Word")
                                     .padding(10)
                                     .font(.headline)
@@ -65,7 +70,7 @@ struct RenshuuList: View {
                     }
                 }
             }
-            .navigationTitle("Catalogue")
+            .navigationTitle(collection.title)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     NavigationLink(destination: Settings()) {
@@ -74,7 +79,7 @@ struct RenshuuList: View {
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink(destination: CreateNewRenshuu()) {
+                    NavigationLink(destination: CreateNewRenshuu(collection: collection)) {
                         Image(systemName: "plus")
                     }
                 }
@@ -84,6 +89,6 @@ struct RenshuuList: View {
 }
 
 #Preview {
-    RenshuuList()
+    RenshuuList(collection: Collection(title: "Example"))
         .modelContainer(for: Renshuu.self, inMemory: true)
 }

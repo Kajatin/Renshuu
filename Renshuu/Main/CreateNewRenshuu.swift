@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CreateNewRenshuu: View {
+    var collection: Collection
+    
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @Environment(NotificationsManager.self) private var notificationsManager
@@ -52,7 +54,7 @@ struct CreateNewRenshuu: View {
             ToolbarItem {
                 Button {
                     withAnimation {
-                        modelContext.insert(Renshuu(original: original, translation: translation))
+                        modelContext.insert(Renshuu(original: original, translation: translation, collection: collection))
                         onboardingNeeded = false
                         if !isOnboarding && askForNotifications {
                             showNotificationsSheet.toggle()
@@ -119,7 +121,7 @@ struct CreateNewRenshuu: View {
 #Preview {
     var notificationsManager = NotificationsManager()
     NavigationStack {
-        CreateNewRenshuu()
+        CreateNewRenshuu(collection: Collection(title: "Example"))
     }
     .modelContainer(for: Renshuu.self, inMemory: true)
     .environment(notificationsManager)
