@@ -34,18 +34,9 @@ struct RecallPractise: View {
     }
 
     @Query(RecallPractise.fetchDescriptor) private var renshuus: [Renshuu]
-    
+
     @ViewBuilder
     var body: some View {
-        if #available(iOS 26.0, *) {
-            recallStack.tabBarMinimizeBehavior(.automatic)
-        } else {
-            recallStack
-        }
-    }
-    
-    @ViewBuilder
-    var recallStack: some View {
         ZStack(alignment: .topLeading) {
             Color(UIColor(hue: randomHue, saturation: 0.2, brightness: 1, alpha: 1))
                 .ignoresSafeArea(.all, edges: .all)
@@ -125,6 +116,7 @@ struct RecallPractise: View {
             }
             .padding()
         }
+        .tabBarMinimizeBehavior(.automatic)
     }
 }
 

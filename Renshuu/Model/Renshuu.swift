@@ -23,6 +23,14 @@ final class Renshuu: Identifiable {
     var repetitions: Int = 0
     /// Date to show this item again.
     var dueDate: Date = Date()
+    
+    /// AI generated explanation of the word with some examples.
+    var explainer: Explainer?
+    
+    init () {
+        self.original = ""
+        self.translation = ""
+    }
 
     init(original: String, translation: String) {
         self.original = original

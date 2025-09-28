@@ -15,15 +15,6 @@ struct ContentView: View {
 
     @ViewBuilder
     var body: some View {
-        if #available(iOS 26.0, *) {
-            tabView.tabBarMinimizeBehavior(.onScrollDown)
-        } else {
-            tabView
-        }
-    }
-    
-    @ViewBuilder
-    var tabView: some View {
         TabView {
             Tab("Catalogue", systemImage: "books.vertical") {
                 RenshuuList()
@@ -46,6 +37,7 @@ struct ContentView: View {
         ) {
             Welcome()
         }
+        .tabBarMinimizeBehavior(.onScrollDown)
     }
 }
 

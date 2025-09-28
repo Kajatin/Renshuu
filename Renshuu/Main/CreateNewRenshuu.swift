@@ -15,8 +15,7 @@ struct CreateNewRenshuu: View {
     @AppStorage("onboardingNeeded") var onboardingNeeded: Bool = true
     @AppStorage("askForNotifications") var askForNotifications: Bool = true
 
-    @State private var original: String = ""
-    @State private var translation: String = ""
+    @State private var newRenshuu = Renshuu()
     @State private var showNotificationsSheet = false
 
     @FocusState private var originalInputFocused: Bool
@@ -25,24 +24,29 @@ struct CreateNewRenshuu: View {
 
     var body: some View {
         Form {
-            VStack(alignment: .leading) {
-                Text("Word")
-                    .foregroundStyle(.secondary)
+            Section {
+                VStack(alignment: .leading) {
+                    Text("Word")
+                        .foregroundStyle(.secondary)
 
-                TextField("Enter the original word", text: $original)
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
-                    .focused($originalInputFocused)
+                    TextField("Enter the original word", text: $newRenshuu.original)
+                        .textInputAutocapitalization(.never)
+                        .disableAutocorrection(true)
+                }
+
+                VStack(alignment: .leading) {
+                    Text("Meaning")
+                        .foregroundStyle(.secondary)
+
+                    TextField("Enter the meaning of the word", text: $newRenshuu.translation)
+                        .textInputAutocapitalization(.never)
+                        .disableAutocorrection(true)
+                }
+            } header: {
+                Text("Details")
             }
 
-            VStack(alignment: .leading) {
-                Text("Meaning")
-                    .foregroundStyle(.secondary)
-
-                TextField("Enter the meaning of the word", text: $translation)
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
-            }
+            RenshuuExplainer(renshuu: newRenshuu)
         }
         .navigationTitle("New")
         .onAppear {
@@ -52,7 +56,7 @@ struct CreateNewRenshuu: View {
             ToolbarItem {
                 Button {
                     withAnimation {
-                        modelContext.insert(Renshuu(original: original, translation: translation))
+                        modelContext.insert(newRenshuu)
                         onboardingNeeded = false
                         if !isOnboarding && askForNotifications {
                             showNotificationsSheet.toggle()

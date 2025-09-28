@@ -5,7 +5,6 @@
 //  Created by Roland Kajatin on 11/05/2025.
 //
 
-//import FoundationModels
 import SwiftUI
 
 struct EditRenhsuu: View {
@@ -18,23 +17,29 @@ struct EditRenhsuu: View {
 
     var body: some View {
         Form {
-            VStack(alignment: .leading) {
-                Text("Word")
-                    .foregroundStyle(.secondary)
+            Section {
+                VStack(alignment: .leading) {
+                    Text("Word")
+                        .foregroundStyle(.secondary)
 
-                TextField("Enter the original word", text: $renshuu.original)
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
+                    TextField("Enter the original word", text: $renshuu.original)
+                        .textInputAutocapitalization(.never)
+                        .disableAutocorrection(true)
+                }
+
+                VStack(alignment: .leading) {
+                    Text("Meaning")
+                        .foregroundStyle(.secondary)
+
+                    TextField("Enter the meaning of the word", text: $renshuu.translation)
+                        .textInputAutocapitalization(.never)
+                        .disableAutocorrection(true)
+                }
+            } header: {
+                Text("Details")
             }
 
-            VStack(alignment: .leading) {
-                Text("Meaning")
-                    .foregroundStyle(.secondary)
-
-                TextField("Enter the meaning of the word", text: $renshuu.translation)
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
-            }
+            RenshuuExplainer(renshuu: renshuu)
         }
         .navigationTitle("Edit")
         .toolbar {
@@ -46,9 +51,7 @@ struct EditRenhsuu: View {
                 }
             }
 
-            if #available(iOS 26.0, *) {
-                ToolbarSpacer(.fixed)
-            }
+            ToolbarSpacer(.fixed)
 
             ToolbarItem {
                 Button {

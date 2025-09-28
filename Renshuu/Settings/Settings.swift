@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Settings: View {
     @AppStorage("reversedPracticeOrder") var reversedPracticeOrder: Bool = false
+    @AppStorage("targetLanguage") var targetLanguage: String = "Danish"
 
     @State private var showDeleteAllDataAlert: Bool = false
 
@@ -22,6 +23,13 @@ struct Settings: View {
                 footer: Text("Reverses the order in which the word pair is shown during practice. Defaults to showing the foreign word first.")
             ) {
                 Toggle("Reversed order", isOn: $reversedPracticeOrder)
+            }
+            
+            Section(
+                header: Text("Language"),
+                footer: Text("Specifies the foreign language used. Only one language is supported at the moment.")
+            ) {
+                TextField("Foreign language", text: $targetLanguage)
             }
 
             Section(
